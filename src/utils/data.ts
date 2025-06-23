@@ -1,6 +1,6 @@
 import type { ColumnT, TaskT } from './types';
 
-export const COLUMNS: ColumnT[] = [
+export const INITIAL_COLUMN: ColumnT[] = [
 	{ id: 'TODO', title: 'To Do' },
 	{ id: 'IN_PROGRESS', title: 'Inprogress' },
 	{ id: 'DONE', title: 'Done' },

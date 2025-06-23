@@ -7,14 +7,16 @@ interface Props {
 	column: ColumnT;
 	tasks: TaskT[];
 	setShow: () => void;
+	setTasks: (val: TaskT[]) => void;
+	setId: (id: string) => void;
 }
 
-const Column = ({ column, tasks, setShow }: Props) => {
+const Column = ({ column, tasks, setShow, setId }: Props) => {
 	const { setNodeRef } = useDroppable({ id: column.id });
 	return (
 		<div
 			ref={setNodeRef}
-			className=" bg-neutral-700/50 rounded-xl flex flex-col w-full p-4 gap-4"
+			className=" bg-neutral-700/50 rounded-xl flex flex-col w-full p-4 gap-4 min-h-[200px]"
 		>
 			<div className="font-bold rounded-t ">{column.title}</div>
 			<div className="flex flex-col gap-4">
@@ -22,8 +24,11 @@ const Column = ({ column, tasks, setShow }: Props) => {
 					return <Task key={task.id} task={task} />;
 				})}
 				<AddColumnBtn
-					className=" py-2 bg-teal-500 w-full rounded"
-					setShow={setShow}
+					className=" py-2 bg-teal-500 w-full rounded hover:bg-teal-400 duration-200 active:bg-teal-600 "
+					setShow={() => {
+						setShow();
+						setId(column.id);
+					}}
 				>
 					Add task
 				</AddColumnBtn>
