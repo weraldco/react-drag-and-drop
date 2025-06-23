@@ -1,11 +1,11 @@
 import { useForm, type FieldValues } from 'react-hook-form';
-import type { ColumnT } from '../../utils/types';
+import type { ColumnsT } from '../../../store/columnStore';
 import ErrorMessage from '../ErrorMessage';
 import FormInputField from '../FormInputField';
 
 interface Props {
 	setCloseModal: () => void;
-	handleAddColumn: (data: ColumnT) => void;
+	handleAddColumn: (data: ColumnsT) => void;
 }
 
 const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
@@ -19,8 +19,8 @@ const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
 	const onSubmit = async (data: FieldValues) => {
 		await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		const newColumn: ColumnT = {
-			id: data.columnName.toUpperCase(),
+		const newColumn: ColumnsT = {
+			slug: data.columnName.toUpperCase(),
 			title: data.columnName,
 		};
 		handleAddColumn(newColumn);

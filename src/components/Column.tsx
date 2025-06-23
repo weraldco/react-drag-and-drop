@@ -1,10 +1,11 @@
 import { useDroppable } from '@dnd-kit/core';
-import type { ColumnT, TaskT } from '../utils/types';
+import type { ColumnsT } from '../../store/columnStore';
+import type { TaskT } from '../utils/types';
 import AddColumnBtn from './AddColumnBtn';
 import Task from './Task';
 
 interface Props {
-	column: ColumnT;
+	column: ColumnsT;
 	tasks: TaskT[];
 	setShow: () => void;
 	setTasks: (val: TaskT[]) => void;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const Column = ({ column, tasks, setShow, setId }: Props) => {
-	const { setNodeRef } = useDroppable({ id: column.id });
+	const { setNodeRef } = useDroppable({ id: column.slug });
 	return (
 		<div
 			ref={setNodeRef}
@@ -27,7 +28,7 @@ const Column = ({ column, tasks, setShow, setId }: Props) => {
 					className=" py-2 bg-teal-500 w-full rounded hover:bg-teal-400 duration-200 active:bg-teal-600 "
 					setShow={() => {
 						setShow();
-						setId(column.id);
+						setId(column.slug);
 					}}
 				>
 					Add task

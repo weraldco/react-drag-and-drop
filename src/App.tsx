@@ -1,17 +1,37 @@
+// import { useEffect } from 'react';
+// import { useColumnStore } from '../store/columnStore';
+
+// const App = () => {
+// 	const { columns, getColumns } = useColumnStore();
+// 	useEffect(() => {
+// 		getColumns();
+// 	}, []);
+// 	console.log('Data', columns);
+// 	return <div>Test</div>;
+// };
+
+// export default App;
+
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoIosAdd } from 'react-icons/io';
+import { useColumnStore, type ColumnsT } from '../store/columnStore';
+import { API_PATHS } from '../utils/apiPath';
+import axiosInstance from '../utils/axiosIntances';
 import AddColumnBtn from './components/AddColumnBtn';
 import Column from './components/Column';
 import AddColumnForm from './components/Column/AddColumnForm';
 import Modal from './components/Modal';
 import AddTaskForm from './components/Task/AddTaskForm';
-import { INITIAL_COLUMN, INITIAL_TASK } from './utils/data';
-import type { ColumnT, TaskT } from './utils/types';
+import { INITIAL_TASK } from './utils/data';
+import type { TaskT } from './utils/types';
 
 function App() {
+	const { columns, getColumns } = useColumnStore();
 	const [tasks, setTasks] = useState<TaskT[]>(INITIAL_TASK);
-	const [columns, setColumns] = useState<ColumnT[]>(INITIAL_COLUMN);
+	useEffect(() => {
+		getColumns();
+	}, [getColumns]);
 
 	const [id, setId] = useState<string>('');
 	const [showAddColumnModal, setShowAddColumnModal] = useState(false);
@@ -32,9 +52,16 @@ function App() {
 	const handleAddTask = (data: TaskT) => {
 		setTasks([...tasks, data]);
 	};
-	const handleAddColumn = (data: ColumnT) => {
-		setColumns([...columns, data]);
+	const handleAddColumn = async (data: ColumnsT) => {
+		try {
+			await axiosInstance.post(API_PATHS.COLUMNS.ADD, data);
+			getColumns();
+		} catch (error) {
+			console.error('Error adding new column!', error);
+		}
+		// setColumns([...columns, data]);
 	};
+	if (!columns) return <div>Loading..</div>;
 	return (
 		<div className="w-full h-full relative">
 			{showAddColumnModal && (
@@ -63,14 +90,14 @@ function App() {
 			)}
 
 			<div className="p-4 flex w-full justify-between gap-4 relative">
-				<div className="grid grid-cols-6 justify-between gap-8">
+				<div className="grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 justify-between gap-8">
 					<DndContext onDragEnd={handleDragEnd}>
 						{columns.map((col, i) => {
 							return (
 								<Column
 									key={i}
 									column={col}
-									tasks={tasks.filter((task) => task.column_id === col.id)}
+									tasks={tasks.filter((task) => task.column_id === col.slug)}
 									setTasks={setTasks}
 									setShow={() => setShowAddTaskModal((prev) => !prev)}
 									setId={setId}
