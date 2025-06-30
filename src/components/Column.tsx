@@ -1,6 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import type { ColumnsT } from '../../store/columnStore';
-import type { TaskT } from '../utils/types';
+import type { TaskT } from '../../store/taskStore';
 import AddColumnBtn from './AddColumnBtn';
 import Task from './Task';
 
@@ -8,7 +8,6 @@ interface Props {
 	column: ColumnsT;
 	tasks: TaskT[];
 	setShow: () => void;
-	setTasks: (val: TaskT[]) => void;
 	setId: (id: string) => void;
 }
 

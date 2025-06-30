@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { API_PATHS } from '../utils/apiPath';
+import axiosInstance from '../utils/axiosIntances';
 
-// type of store
 export type TaskT = {
 	id: number;
 	title: string;
@@ -10,16 +11,21 @@ export type TaskT = {
 };
 export type TaskStoreT = {
 	tasks: TaskT[] | null;
-	getTask: () => Promise<void | null>;
+	setTasks: (tasks: TaskT[]) => Promise<void | null>;
+	getTasks: () => Promise<void | null>;
 	addTask: () => Promise<void | null>;
 };
-// create a store
 
-export const useTaskStore = create<TaskStoreT>((set, get) => ({
+export const useTaskStore = create<TaskStoreT>((set) => ({
 	tasks: null,
-	getTask: async () => {
-        const response = await 
-    },
+	setTasks: async (tasks: TaskT[]) => {
+		set({ tasks: tasks });
+	},
+	getTasks: async () => {
+		const response = await axiosInstance.get(API_PATHS.TASKS.GET);
+		if (response.data) {
+			set({ tasks: response.data.data });
+		}
+	},
 	addTask: async () => {},
 }));
-//// create a function of the store.

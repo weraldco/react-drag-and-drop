@@ -8,5 +8,9 @@ export const API_PATHS = {
 	TASKS: {
 		GET: `/tasks/get`,
 		ADD: `/tasks/add`,
+		UPDATE: `/tasks/update`,
+	},
+	AUTH: {
+		LOGIN: `/auth/login`,
 	},
 };

@@ -12,9 +12,8 @@ const FormInputField = ({ label, id, ...inputProps }: FormInputFieldProps) => {
 			</label>
 			<input
 				{...inputProps}
-				type="text"
 				id={id}
-				className="bg-neutral-200/50 rounded-xl p-2 outline-0"
+				className="bg-neutral-100 rounded-xl p-2 outline-0 text-neutral-700"
 			/>
 		</div>
 	);

@@ -1,16 +1,15 @@
 import { useForm, type FieldValues } from 'react-hook-form';
-import type { TaskT } from '../../utils/types';
+import type { TaskT } from '../../../store/taskStore';
 import ErrorMessage from '../ErrorMessage';
 import FormInputField from '../FormInputField';
 
 interface Props {
 	id: string;
-	tasks: TaskT[];
-	setTasks: (data: TaskT) => void;
+	handleAddTask: (data: TaskT) => void;
 	setCloseModal: () => void;
 }
 
-const AddTaskForm = ({ tasks, setTasks, id, setCloseModal }: Props) => {
+const AddTaskForm = ({ handleAddTask, setCloseModal, id }: Props) => {
 	const {
 		handleSubmit,
 		register,
@@ -19,17 +18,15 @@ const AddTaskForm = ({ tasks, setTasks, id, setCloseModal }: Props) => {
 	} = useForm();
 
 	const onSubmit = async (data: FieldValues) => {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		console.log(data);
 		const newData: TaskT = {
-			id: String(tasks.length + 1),
+			id: 0,
 			title: data.taskName,
 			description: data.taskDescription,
 			status: false,
 			column_id: id,
 		};
 
-		setTasks(newData);
+		handleAddTask(newData);
 		reset();
 		setCloseModal();
 	};

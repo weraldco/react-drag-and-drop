@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/core';
-import type { TaskT } from '../utils/types';
+import type { TaskT } from '../../store/taskStore';
 
 interface Props {
 	task: TaskT;

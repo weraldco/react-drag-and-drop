@@ -17,8 +17,6 @@ const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
 	} = useForm();
 
 	const onSubmit = async (data: FieldValues) => {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-
 		const newColumn: ColumnsT = {
 			slug: data.columnName.toUpperCase(),
 			title: data.columnName,
