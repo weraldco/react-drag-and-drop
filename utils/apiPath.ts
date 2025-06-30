@@ -1,5 +1,3 @@
-// const API_PATH = '/api';
-
 export const API_PATHS = {
 	COLUMNS: {
 		GET: `/columns/get`,
@@ -12,5 +10,6 @@ export const API_PATHS = {
 	},
 	AUTH: {
 		LOGIN: `/auth/login`,
+		ME: `/auth/me`,
 	},
 };

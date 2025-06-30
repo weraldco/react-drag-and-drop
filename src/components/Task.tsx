@@ -1,11 +1,12 @@
 import { useDraggable } from '@dnd-kit/core';
+import { memo } from 'react';
 import type { TaskT } from '../../store/taskStore';
 
 interface Props {
 	task: TaskT;
 }
 
-const Task = ({ task }: Props) => {
+const Task = memo(({ task }: Props) => {
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: task.id,
 	});
@@ -25,6 +26,6 @@ const Task = ({ task }: Props) => {
 			<div className="text-sm text-neutral-300">{task.description}</div>
 		</div>
 	);
-};
+});
 
 export default Task;

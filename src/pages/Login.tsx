@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import z from 'zod';
 import { API_PATHS } from '../../utils/apiPath';
 import axiosInstance from '../../utils/axiosIntances';
@@ -15,6 +16,7 @@ const signInSchema = z.object({
 type SignInSchemaT = z.infer<typeof signInSchema>;
 
 const Login = () => {
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -30,6 +32,7 @@ const Login = () => {
 
 			console.log(response);
 			reset();
+			navigate('/dashboard');
 		} catch (error) {
 			// Handling the axios Error response.
 			if (axios.isAxiosError(error)) {
