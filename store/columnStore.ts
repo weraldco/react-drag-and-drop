@@ -11,11 +11,11 @@ type ColumnStoreT = {
 	columns: ColumnsT[] | null;
 	setColumns: (columns: ColumnsT[]) => Promise<null | void>;
 	getColumns: () => Promise<null | void>;
-	addColumn: () => Promise<null | void>;
+	addColumn: (data: ColumnsT) => Promise<null | void>;
 };
 // create a hook store
 
-export const useColumnStore = create<ColumnStoreT>((set, get) => ({
+export const useColumnStore = create<ColumnStoreT>((set) => ({
 	columns: null,
 	setColumns: async (columns: ColumnsT[]) => {
 		if (columns) {
@@ -28,5 +28,15 @@ export const useColumnStore = create<ColumnStoreT>((set, get) => ({
 			set({ columns: response.data.data });
 		}
 	},
-	addColumn: async () => {},
+	addColumn: async (data: ColumnsT) => {
+		try {
+			const response = await axiosInstance.post(API_PATHS.COLUMNS.ADD, data);
+			console.log(response.data.data);
+			set((state) => ({
+				columns: [...(state.columns ?? []), response.data.data],
+			}));
+		} catch (error) {
+			console.error('error adding columns', error);
+		}
+	},
 }));

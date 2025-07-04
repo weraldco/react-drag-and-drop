@@ -1,14 +1,10 @@
 import { useForm, type FieldValues } from 'react-hook-form';
-import type { ColumnsT } from '../../../store/columnStore';
+import { useColumnStore, type ColumnsT } from '../../../store/columnStore';
 import ErrorMessage from '../ErrorMessage';
-import FormInputField from '../FormInputField';
 
-interface Props {
-	setCloseModal: () => void;
-	handleAddColumn: (data: ColumnsT) => void;
-}
+const AddColumnForm = () => {
+	const addColumn = useColumnStore((s) => s.addColumn);
 
-const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
 	const {
 		handleSubmit,
 		register,
@@ -21,23 +17,23 @@ const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
 			slug: data.columnName.toUpperCase(),
 			title: data.columnName,
 		};
-		handleAddColumn(newColumn);
+		await addColumn(newColumn);
 		reset();
-		setCloseModal();
+		console.log('Adding column:', newColumn);
+		console.log('Current columns:', useColumnStore.getState().columns);
 	};
 	return (
 		<form
-			className="flex flex-col p-4 space-y-4"
+			className="flex flex-col p-4 space-y-4  relative"
 			onSubmit={handleSubmit(onSubmit)}
 		>
-			<FormInputField
+			<input
 				{...register('columnName', {
 					required: 'Task name is required!',
 				})}
-				label="Column Name"
 				type="text"
-				id="task-name"
-				placeholder="Enter your task name.."
+				className="text-neutral-900 text-sm w-full bg-white rounded-xl px-2 py-2 outline-none"
+				placeholder="Add columns.."
 			/>
 			{errors.columnName && (
 				<ErrorMessage error={`${errors.columnName.message}`} />
@@ -46,9 +42,9 @@ const AddColumnForm = ({ setCloseModal, handleAddColumn }: Props) => {
 			<button
 				disabled={isSubmitting}
 				type="submit"
-				className="bg-blue-500 p-2 rounded-xl text-white cursor-pointer"
+				className="text-neutral-50 text-sm  bg-blue-500 rounded-r-xl px-4 py-2 absolute right-0 cursor-pointer"
 			>
-				Add Column
+				+
 			</button>
 		</form>
 	);

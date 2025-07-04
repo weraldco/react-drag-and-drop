@@ -7,8 +7,9 @@ interface Props {
 }
 
 const Task = memo(({ task }: Props) => {
+	console.log('Rendering Task:', task.id, task.column_id);
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
-		id: task.id,
+		id: String(task.id),
 	});
 
 	const style = transform
@@ -26,6 +27,15 @@ const Task = memo(({ task }: Props) => {
 			<div className="text-sm text-neutral-300">{task.description}</div>
 		</div>
 	);
-});
+}, areEqual);
+
+function areEqual(prevProps: Props, nextProps: Props) {
+	return (
+		prevProps.task.id === nextProps.task.id &&
+		prevProps.task.title === nextProps.task.title &&
+		prevProps.task.description === nextProps.task.description &&
+		prevProps.task.column_id === nextProps.task.column_id
+	);
+}
 
 export default Task;

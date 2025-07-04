@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
-import Dashboard from './pages/dashboard';
+import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 
 function App() {

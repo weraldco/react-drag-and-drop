@@ -1,15 +1,17 @@
 import { useForm, type FieldValues } from 'react-hook-form';
-import type { TaskT } from '../../../store/taskStore';
+import { useModalStore } from '../../../store/modalStore';
+import { useTaskStore, type TaskT } from '../../../store/taskStore';
 import ErrorMessage from '../ErrorMessage';
 import FormInputField from '../FormInputField';
 
 interface Props {
 	id: string;
-	handleAddTask: (data: TaskT) => void;
-	setCloseModal: () => void;
 }
 
-const AddTaskForm = ({ handleAddTask, setCloseModal, id }: Props) => {
+const AddTaskForm = ({ id }: Props) => {
+	const addTask = useTaskStore((s) => s.addTask);
+	const closeModal = useModalStore((s) => s.closeModal);
+
 	const {
 		handleSubmit,
 		register,
@@ -26,9 +28,10 @@ const AddTaskForm = ({ handleAddTask, setCloseModal, id }: Props) => {
 			column_id: id,
 		};
 
-		handleAddTask(newData);
+		addTask(newData);
+		console.log('Task new data - ', newData);
 		reset();
-		setCloseModal();
+		closeModal();
 	};
 	return (
 		<form

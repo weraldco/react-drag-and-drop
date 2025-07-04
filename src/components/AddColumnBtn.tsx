@@ -7,6 +7,7 @@ interface Props {
 }
 
 const AddColumnBtn = ({ setShow, children, className }: Props) => {
+	console.log('Button rerender?');
 	return (
 		<div className="relative flex items-center justify-center ">
 			<button

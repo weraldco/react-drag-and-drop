@@ -1,17 +1,18 @@
 import { useDroppable } from '@dnd-kit/core';
+import { memo } from 'react';
 import type { ColumnsT } from '../../store/columnStore';
+import { useModalStore } from '../../store/modalStore';
 import type { TaskT } from '../../store/taskStore';
-import AddColumnBtn from './AddColumnBtn';
 import Task from './Task';
 
 interface Props {
 	column: ColumnsT;
 	tasks: TaskT[];
-	setShow: () => void;
-	setId: (id: string) => void;
 }
 
-const Column = ({ column, tasks, setShow, setId }: Props) => {
+const Column = memo(({ column, tasks }: Props) => {
+	console.log('Rendering Column:', column.slug, tasks.length);
+	const openModal = useModalStore((s) => s.openModal);
 	const { setNodeRef } = useDroppable({ id: column.slug });
 	return (
 		<div
@@ -23,7 +24,15 @@ const Column = ({ column, tasks, setShow, setId }: Props) => {
 				{tasks.map((task) => {
 					return <Task key={task.id} task={task} />;
 				})}
-				<AddColumnBtn
+
+				<button
+					onClick={() => openModal(column.slug)}
+					className="py-2 bg-teal-500 w-full rounded hover:bg-teal-400 duration-200 active:bg-teal-600 "
+				>
+					Add task
+				</button>
+
+				{/* <AddColumnBtn
 					className=" py-2 bg-teal-500 w-full rounded hover:bg-teal-400 duration-200 active:bg-teal-600 "
 					setShow={() => {
 						setShow();
@@ -31,10 +40,21 @@ const Column = ({ column, tasks, setShow, setId }: Props) => {
 					}}
 				>
 					Add task
-				</AddColumnBtn>
+				</AddColumnBtn> */}
 			</div>
 		</div>
 	);
-};
+}, areEqual);
+
+function areEqual(prev: Props, next: Props) {
+	return (
+		prev.column.slug === next.column.slug &&
+		prev.column.title === next.column.title &&
+		prev.tasks.length === next.tasks.length &&
+		prev.tasks.every((t, i) => t.id === next.tasks[i]?.id) &&
+		prev.setShow === next.setShow &&
+		prev.setId === next.setId
+	);
+}
 
 export default Column;
